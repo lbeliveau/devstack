@@ -9,4 +9,4 @@ sudo systemctl disable firewalld
 sudo systemctl stop iptables
 sudo systemctl disable iptables
 
-ovs-vsctl --may-exist add-port br-enp7s0f1 enp7s0f1
+ovs-vsctl --may-exist add-port br-ens4f0 ens4f0
