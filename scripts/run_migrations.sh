@@ -3,17 +3,20 @@
 NAME=test
 ID=`nova show test | grep "| id" | awk '{print $4}'`
 
+function log() {
+    date=`date +"%d-%m-%Y %T"`
+    echo "*** $date | $1"
+}
+
 i=0
 while true; do
     i=$((i+1))
-    date=`date +"%d-%m-%Y %T"`
-    echo "*** $date | Guest migration: $i"
+    log "Guest migration: $i"
     sleep 1
 
     nova migrate $ID
     if [ $? -ne 0 ]; then
-        date=`date +"%d-%m-%Y %T"`
-        echo "*** $date | Migration failed, exit"
+        log "Migration failed, exit"
         exit
     fi
     sleep 1
@@ -26,8 +29,7 @@ while true; do
                 break
                 ;;
             ERROR)
-                date=`date +"%d-%m-%Y %T"`
-                echo "*** $date | Instance in error, exit"
+                log "Instance in error, exit"
                 exit
                 ;;
             *)
@@ -37,8 +39,7 @@ while true; do
 
     nova resize-confirm $ID
     if [ $? -ne 0 ]; then
-        date=`date +"%d-%m-%Y %T"`
-        echo "*** $date | Confirm resize failed, exit"
+        log "Confirm resize failed, exit"
         exit
     fi
     sleep 1
@@ -51,8 +52,7 @@ while true; do
                 break
                 ;;
             ERROR)
-                date=`date +"%d-%m-%Y %T"`
-                echo "*** $date | Instance in error, exit"
+                log "Instance in error, exit"
                 exit
                 ;;
             *)
